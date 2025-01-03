@@ -4,7 +4,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
-//builder.Logging.AddPrettyConsole();
+builder.Logging.AddPrettyConsole(opt =>
+{
+    opt.UseUtcTimestamp = true;
+});
 
 using (IHost host = builder.Build())
 {
