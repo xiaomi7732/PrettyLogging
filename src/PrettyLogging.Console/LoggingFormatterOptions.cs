@@ -8,7 +8,7 @@ public class LoggingFormatterOptions : ConsoleFormatterOptions
     {
         if (string.IsNullOrEmpty(TimestampFormat))
         {
-            TimestampFormat = "yyyy-MM-dd HH:mm:ss.fff";
+            TimestampFormat = "o";
         }
     }
 
