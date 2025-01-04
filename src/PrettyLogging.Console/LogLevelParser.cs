@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PrettyLogging.Console;
 
@@ -10,7 +11,7 @@ internal sealed class LogLevelReverseParser
 
     public static IDictionary<LogLevel, string> _mapping = new Dictionary<LogLevel, string>
     {
-        [LogLevel.Critical] = "CRITICAL",
+        [LogLevel.Critical] = "CRIT",
         [LogLevel.Error] = "ERR",
         [LogLevel.Warning] = "WARN",
         [LogLevel.Information] = "INFO",
@@ -20,4 +21,6 @@ internal sealed class LogLevelReverseParser
     };
 
     public string GetString(LogLevel logLevel) => _mapping[logLevel];
+
+    public int MaxWidth { get; } = "DEBUG".Length;
 }

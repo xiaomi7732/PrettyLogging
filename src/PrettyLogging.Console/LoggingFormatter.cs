@@ -64,10 +64,10 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             textWriter.Write(string.Format($"{{0:{_formatterOptions.TimestampFormat}}}", _formatterOptions.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now));
         }
 
-        if (_formatterOptions.DisplayLoggingLevel)
+        if (_formatterOptions.ShowLogLevel)
         {
             OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
-            textWriter.Write($"{_logLevelReverseParser.GetString(logEntry.LogLevel)}");
+            textWriter.Write(_logLevelReverseParser.GetString(logEntry.LogLevel).PadRight(_logLevelReverseParser.MaxWidth, ' '));
         }
 
         if (_formatterOptions.LogManagedThreadId)
