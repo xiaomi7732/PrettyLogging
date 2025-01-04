@@ -42,13 +42,16 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             return;
         }
 
-        Pretty(logEntry, scopeProvider, textWriter);
-        textWriter.WriteLine(message);
+        WritePrefix(logEntry, scopeProvider, textWriter);
+        textWriter.Write(message);
+        WriteSuffix(logEntry, scopeProvider, textWriter);
+        textWriter.WriteLine();
     }
 
-    private void Pretty<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
+    private void WriteSuffix<TState>(LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {
-        WritePrefix(logEntry, scopeProvider, textWriter);
+        // TODO: Adding more customizations
+        return;
     }
 
     private void WritePrefix<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
