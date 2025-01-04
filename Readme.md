@@ -4,7 +4,7 @@ Makes `Microsoft.Extensions.Logging` easy for your eye!
 
 ## ⭐ me if you like it
 
-Please start it if you likes this project so that we all know!
+Please star it if you like this project so that we all know!
 
 ## Getting started
 
