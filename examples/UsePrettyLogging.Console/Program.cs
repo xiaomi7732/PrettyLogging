@@ -1,21 +1,16 @@
-﻿
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.Extensions.Logging;
 
-HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
-builder.Logging.AddPrettyConsole(opt =>
+// Register
+using ILoggerFactory factory = LoggerFactory.Create(builder =>
 {
-    // opt.TimestampFormat = "";
-    opt.DisplayLoggingLevel = false;
-    opt.UseUtcTimestamp = true;
-    opt.LogManagedThreadId = true;
+    // Replace `AddConsole()` with `AddPrettyConsole()`.
+    builder.AddConsole();
+    // builder.AddPrettyConsole();
 });
 
-using (IHost host = builder.Build())
-{
-    ILogger logger = host.Services.GetRequiredService<ILogger<Program>>();
-    logger.LogInformation("Hello {name}", "Pretty Logging");
-    logger.LogInformation("This is a warning!");
-    await host.RunAsync();
-}
+// Create a logger as normal
+ILogger logger = factory.CreateLogger<Program>();
+
+// Use logger
+logger.LogInformation("Hello {name}", "Pretty Logging");
+logger.LogInformation("This is a warning!");
