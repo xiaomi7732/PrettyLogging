@@ -23,15 +23,8 @@ Please start it if you likes this project so that we all know!
     using ILoggerFactory factory = LoggerFactory.Create(builder =>
     {
         // Replace `AddConsole()` with `AddPrettyConsole()`.
-        // builder.AddConsole();
-        builder.AddPrettyConsole();
+        builder.AddPrettyConsole(); // builder.AddConsole();
     });
-
-    // Create a logger as normal
-    ILogger logger = factory.CreateLogger<Program>();
-
-    // Use logger
-    logger.LogInformation("Hello {name}", "Pretty Logging");
     ```
 
     See [Program.cs](examples/UsePrettyLogging.Console/Program.cs) for a full example.
