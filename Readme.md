@@ -18,7 +18,7 @@ If you like this project, please give it a star to let others know!
 
     _(Note: A release will be available soon.)_
 
-1. Set up Pretty Logging in your Console app
+1. Set up Pretty Logging in your app
 
     Add the `PrettyIt()` method to your logger configuration:
 
