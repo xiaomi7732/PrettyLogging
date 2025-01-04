@@ -1,17 +1,25 @@
-using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.DependencyInjection;
 using PrettyLogging.Console;
 using System;
 
-namespace Microsoft.Extensions.DependencyInjection;
+namespace Microsoft.Extensions.Logging;
 
 public static class ServiceCollectionExtensions
 {
-    public static ILoggingBuilder AddPrettyConsole(this ILoggingBuilder loggingBuilder, Action<LoggingFormatterOptions> options)
+    /// <summary>
+    /// Adds a pretty console logger.
+    /// </summary>
+    public static ILoggingBuilder AddPrettyConsole(this ILoggingBuilder loggingBuilder, Action<LoggingFormatterOptions>? options = null)
     {
         loggingBuilder.Services.AddSingleton(_ => LogLevelReverseParser.Instance);
 
-        loggingBuilder.AddConsole(options => options.FormatterName = LoggingFormatter.InternalName)
-            .AddConsoleFormatter<LoggingFormatter, LoggingFormatterOptions>(options);
+        loggingBuilder.AddConsole(options => options.FormatterName = LoggingFormatter.InternalName);
+        if (options is null)
+        {
+            loggingBuilder.AddConsoleFormatter<LoggingFormatter, LoggingFormatterOptions>();
+            return loggingBuilder;
+        }
+        loggingBuilder.AddConsoleFormatter<LoggingFormatter, LoggingFormatterOptions>(options);
         return loggingBuilder;
     }
 }
