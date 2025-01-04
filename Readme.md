@@ -1,20 +1,26 @@
 # Pretty Logging
 
-Makes `Microsoft.Extensions.Logging` easy for your eye!
+Make `Microsoft.Extensions.Logging` easier on the eyes!
 
 ## ⭐ me if you like it
 
-Please star it if you like this project so that we all know!
+If you like this project, please give it a star to let others know!
 
 ## Getting started
 
-* Add reference to NuGet package:
+1. Install the NuGet package:
+
+    Run the following command to add the pre-release version of the package:
 
     ```shell
     dotnet add package PrettyLogging.Console --prerelease # TODO: Release a stable version.
     ```
 
-* Call `AddPrettyConsole()` for your logging, in a Console application:
+    _(Note: A release will be available soon.)_
+
+1. Set up Pretty Logging in your Console app
+
+    Add the `AddPrettyConsole()` method to your logger configuration:
 
     ```csharp
     using Microsoft.Extensions.Logging;
@@ -27,11 +33,11 @@ Please star it if you like this project so that we all know!
     });
     ```
 
-    See [Program.cs](examples/UsePrettyLogging.Console/Program.cs) for a full example.
+    For a full example, check out [Program.cs](examples/UsePrettyLogging.Console/Program.cs).
 
-* Enjoy the cleaning output:
+1. Enjoy the clean output
 
-  * Before:
+    * Before:
 
     ```log
     info: Program[0]
@@ -40,7 +46,7 @@ Please star it if you like this project so that we all know!
         This is a warning!
     ```
 
-  * After:
+    * After:
 
     ```log
     2025-01-03T16:28:30.2001407-08:00|INFO|Hello Pretty Logging
