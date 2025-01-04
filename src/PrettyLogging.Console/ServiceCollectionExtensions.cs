@@ -22,4 +22,10 @@ public static class ServiceCollectionExtensions
         loggingBuilder.AddConsoleFormatter<LoggingFormatter, LoggingFormatterOptions>(options);
         return loggingBuilder;
     }
+
+    /// <summary>
+    /// A syntax sugar method to append pretty formatter to console logger.
+    /// </summary>
+    public static ILoggingBuilder PrettyIt(this ILoggingBuilder loggingBuilder, Action<LoggingFormatterOptions>? options = null)
+        => AddPrettyConsole(loggingBuilder, options);
 }

@@ -42,16 +42,16 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             return;
         }
 
-        Pretty(logEntry, textWriter);
+        Pretty(logEntry, scopeProvider, textWriter);
         textWriter.WriteLine(message);
     }
 
-    private void Pretty<TState>(in LogEntry<TState> logEntry, TextWriter textWriter)
+    private void Pretty<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {
-        WritePrefix(logEntry, textWriter);
+        WritePrefix(logEntry, scopeProvider, textWriter);
     }
 
-    private void WritePrefix<TState>(in LogEntry<TState> logEntry, TextWriter textWriter)
+    private void WritePrefix<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {
         bool firstSection = true;
 
@@ -67,7 +67,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             textWriter.Write($"{_logLevelReverseParser.GetString(logEntry.LogLevel)}");
         }
 
-        if(_formatterOptions.LogManagedThreadId)
+        if (_formatterOptions.LogManagedThreadId)
         {
             OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
             textWriter.Write($"{Thread.CurrentThread.ManagedThreadId}");
@@ -76,6 +76,26 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         if (!firstSection)
         {
             OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
+        }
+
+        if (_formatterOptions.IncludeScopes && scopeProvider is not null)
+        {
+            bool writeScope = false;
+            scopeProvider.ForEachScope((obj, state) =>
+            {
+                if (obj is null)
+                {
+                    return;
+                }
+                writeScope = true;
+                textWriter.Write($"=>{obj}");
+            }, logEntry.State);
+
+            if (writeScope)
+            {
+                bool isFirstSection = false;
+                OutputSeparatorAndMutateFirstSection(textWriter, ref isFirstSection);
+            }
         }
     }
 

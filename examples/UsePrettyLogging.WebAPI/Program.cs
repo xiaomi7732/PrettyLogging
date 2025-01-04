@@ -1,5 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
-builder.Logging.AddPrettyConsole();
+
+// Append this line
+builder.Logging.PrettyIt();
 
 var app = builder.Build();
 
