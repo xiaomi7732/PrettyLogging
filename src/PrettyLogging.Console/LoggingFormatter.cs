@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging.Console;
 using Microsoft.Extensions.Options;
 using System;
 using System.IO;
+using System.Threading;
 
 namespace PrettyLogging.Console;
 
@@ -42,7 +43,6 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         }
 
         Pretty(logEntry, textWriter);
-
         textWriter.WriteLine(message);
     }
 
@@ -53,15 +53,39 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 
     private void WritePrefix<TState>(in LogEntry<TState> logEntry, TextWriter textWriter)
     {
-        if (_formatterOptions.DisplayLoggingLevel)
-        {
-            textWriter.Write($"[{_logLevelReverseParser.GetString(logEntry.LogLevel)}] ");
-        }
+        bool firstSection = true;
 
         if (!string.IsNullOrEmpty(_formatterOptions.TimestampFormat))
         {
-            textWriter.Write(string.Format($"{{0:{_formatterOptions.TimestampFormat}}} ", _formatterOptions.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now));
+            OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
+            textWriter.Write(string.Format($"{{0:{_formatterOptions.TimestampFormat}}}", _formatterOptions.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now));
         }
+
+        if (_formatterOptions.DisplayLoggingLevel)
+        {
+            OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
+            textWriter.Write($"{_logLevelReverseParser.GetString(logEntry.LogLevel)}");
+        }
+
+        if(_formatterOptions.LogManagedThreadId)
+        {
+            OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
+            textWriter.Write($"{Thread.CurrentThread.ManagedThreadId}");
+        }
+
+        if (!firstSection)
+        {
+            OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
+        }
+    }
+
+    private void OutputSeparatorAndMutateFirstSection(TextWriter textWriter, ref bool isFirstSection)
+    {
+        if (!isFirstSection)
+        {
+            textWriter.Write("|");
+        }
+        isFirstSection = false;
     }
 
     protected virtual void Dispose(bool isDisposing)

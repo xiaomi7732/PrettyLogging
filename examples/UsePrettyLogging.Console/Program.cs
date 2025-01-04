@@ -6,7 +6,10 @@ using Microsoft.Extensions.Logging;
 HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
 builder.Logging.AddPrettyConsole(opt =>
 {
+    // opt.TimestampFormat = "";
+    opt.DisplayLoggingLevel = false;
     opt.UseUtcTimestamp = true;
+    opt.LogManagedThreadId = true;
 });
 
 using (IHost host = builder.Build())
