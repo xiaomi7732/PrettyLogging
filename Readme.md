@@ -4,7 +4,9 @@ Make `Microsoft.Extensions.Logging` easier on the eyes!
 
 ## ⭐ me if you like it
 
-If you like this project, please give it a star on the right upper corner to let others know!
+If you like this project, please ⭐️ it by clicking the star in the top-right corner to help others discover it!
+
+Got ideas or found a bug? Feel free to open an issue and share your feedback!
 
 ## Current version
 
