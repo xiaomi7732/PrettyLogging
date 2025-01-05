@@ -5,8 +5,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <!-- NuGet Package -->
+  <PropertyGroup>
+    <PackageId>PrettyLogging.Console</PackageId>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="../../Readme.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 </Project>
