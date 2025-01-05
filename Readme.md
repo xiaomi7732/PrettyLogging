@@ -8,7 +8,7 @@ If you like this project, please give it a star on the right upper corner to let
 
 ## Current version
 
-![NuGet Version](https://img.shields.io/nuget/vpre/PrettyLogging.Console?style=flat)
+[![NuGet Version](https://img.shields.io/nuget/vpre/PrettyLogging.Console?style=flat)](https://www.nuget.org/packages/PrettyLogging.Console)
 
 ## Getting started
 
