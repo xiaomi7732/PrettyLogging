@@ -6,6 +6,10 @@ Make `Microsoft.Extensions.Logging` easier on the eyes!
 
 If you like this project, please give it a star on the right upper corner to let others know!
 
+## Current version
+
+![NuGet Version](https://img.shields.io/nuget/vpre/PrettyLogging.Console?style=flat)
+
 ## Getting started
 
 1. Install the NuGet package:
