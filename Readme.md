@@ -22,8 +22,6 @@ Got ideas or found a bug? Feel free to open an issue and share your feedback!
     dotnet add package PrettyLogging.Console --prerelease # TODO: Release a stable version.
     ```
 
-    _(Note: A release will be available soon.)_
-
 1. Set up Pretty Logging in your app
 
     Add the `PrettyIt()` method to your logger configuration:
