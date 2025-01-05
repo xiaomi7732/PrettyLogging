@@ -7,7 +7,12 @@ namespace PrettyLogging.Console;
 internal sealed class LogLevelReverseParser
 {
     private LogLevelReverseParser() { }
-    public static IDictionary<LogLevel, string> _mapping = CreateMapping();
+    private static IDictionary<LogLevel, string> _mapping = CreateMapping();
+    
+    // Order matters here: calling the constructor in a static initializer makes it run before
+    // the static constructor. _mappings in this case needs to be put in front of it, because
+    // the instance member of MaxWidth refers _mappings. Revert the order causes null reference
+    // exception.
     public static LogLevelReverseParser Instance { get; } = new LogLevelReverseParser();
 
     public string GetString(LogLevel logLevel) => _mapping[logLevel];
