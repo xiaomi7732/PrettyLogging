@@ -45,8 +45,8 @@ If you like this project, please give it a star on the right upper corner to let
         * After:
 
             ```log
-            2025-01-03T16:28:30.2001407-08:00|INFO|Hello Pretty Logging
-            2025-01-03T16:28:30.2064911-08:00|WARN|This is a warning!
+            2025-01-03T16:28:30.2001407-08:00|INFO |Hello Pretty Logging
+            2025-01-03T16:28:30.2064911-08:00|WARN |This is a warning!
             ```
 
     * WebAPI:
@@ -74,12 +74,12 @@ If you like this project, please give it a star on the right upper corner to let
         * After:
 
             ```log
-            2025-01-03T17:56:08.7340978-08:00|INFO|Now listening on: http://localhost:5140
-            2025-01-03T17:56:08.7401957-08:00|INFO|Application started. Press Ctrl+C to shut down.
-            2025-01-03T17:56:08.7408854-08:00|INFO|Hosting environment: Development
-            2025-01-03T17:56:08.7409246-08:00|INFO|Content root path: C:\AIR\PrettyLogging\examples\UsePrettyLogging.WebAPI
-            2025-01-03T17:56:18.2800129-08:00|INFO|Request starting HTTP/1.1 GET http://localhost:5140/ - - -
-            2025-01-03T17:56:18.3165023-08:00|INFO|Executing endpoint 'HTTP: GET /'
-            2025-01-03T17:56:18.3196735-08:00|INFO|Executed endpoint 'HTTP: GET /'
-            2025-01-03T17:56:18.3273233-08:00|INFO|Request finished HTTP/1.1 GET http://localhost:5140/ - 200 - text/plain;+charset=utf-8 41.9690ms
+            2025-01-03T17:56:08.7340978-08:00|INFO |Now listening on: http://localhost:5140
+            2025-01-03T17:56:08.7401957-08:00|INFO |Application started. Press Ctrl+C to shut down.
+            2025-01-03T17:56:08.7408854-08:00|INFO |Hosting environment: Development
+            2025-01-03T17:56:08.7409246-08:00|INFO |Content root path: C:\AIR\PrettyLogging\examples\UsePrettyLogging.WebAPI
+            2025-01-03T17:56:18.2800129-08:00|INFO |Request starting HTTP/1.1 GET http://localhost:5140/ - - -
+            2025-01-03T17:56:18.3165023-08:00|INFO |Executing endpoint 'HTTP: GET /'
+            2025-01-03T17:56:18.3196735-08:00|INFO |Executed endpoint 'HTTP: GET /'
+            2025-01-03T17:56:18.3273233-08:00|INFO |Request finished HTTP/1.1 GET http://localhost:5140/ - 200 - text/plain;+charset=utf-8 41.9690ms
             ```

@@ -12,7 +12,7 @@ public class LoggingFormatterOptions : ConsoleFormatterOptions
         }
     }
 
-    public bool DisplayLoggingLevel { get; set; } = true;
+    public bool ShowLogLevel { get; set; } = true;
 
     public bool LogManagedThreadId { get; set; }
 }
