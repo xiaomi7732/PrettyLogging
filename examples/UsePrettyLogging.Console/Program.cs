@@ -8,9 +8,9 @@ using Microsoft.Extensions.Logging;
 using ILoggerFactory factory = LoggerFactory.Create(builder =>
 {
 #if IS_SIMPLE_EXAMPLE
-    builder.AddConsole().PrettyIt();
+    builder.AddSimpleConsole().PrettyIt();
 #else
-    builder.AddConsole().PrettyIt(opt =>
+    builder.AddSimpleConsole().PrettyIt(opt =>
     {
         opt.LogManagedThreadId = true;
         opt.IncludeScopes = true;
