@@ -23,17 +23,15 @@ public static class ServiceCollectionExtensions
                 string.Equals(options.FormatterName, ConsoleFormatterNames.Simple, StringComparison.Ordinal))
             {
 #if DEBUG
-                System.Console.WriteLine("Overwriting formatter {0} => {1}.", options.FormatterName?? "(Null)", LoggingFormatter.InternalName);
+                System.Console.WriteLine("Overwriting formatter {0} => {1}.", options.FormatterName ?? "(Null)", LoggingFormatter.InternalName);
 #endif
                 options.FormatterName = LoggingFormatter.InternalName;
             }
         });
 
-        if (options is null)
-        {
-            loggingBuilder.AddConsoleFormatter<LoggingFormatter, LoggingFormatterOptions>();
-            return loggingBuilder;
-        }
+        // Default options to an empty action.
+        options ??= (opt) => { };
+
         loggingBuilder.AddConsoleFormatter<LoggingFormatter, LoggingFormatterOptions>(options);
         return loggingBuilder;
     }
