@@ -11,6 +11,7 @@ namespace PrettyLogging.Console;
 internal class LoggingFormatter : ConsoleFormatter, IDisposable
 {
     public const string InternalName = "PrettyLogging.Console";
+    private const string _separator = "|";
     private const string LoglevelPadding = ": ";
     private static string _messagePadding = new(' ', LogLevelReverseParser.MaxWidth + LoglevelPadding.Length);
     private static readonly string _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
@@ -26,7 +27,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
     private bool _isDisposed;
     private readonly IDisposable? _optionsReloadToken;
     private readonly LogLevelReverseParser _logLevelReverseParser;
-    LoggingFormatterOptions _formatterOptions;
+    private LoggingFormatterOptions _formatterOptions;
 
     public LoggingFormatter(
         IOptionsMonitor<LoggingFormatterOptions> options,
@@ -47,13 +48,14 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {
+        // TODO: Support BufferedLogRecord for .NET 9 or later.
         // if (logEntry.State is BufferedLogRecord bufferedRecord)
         // {
         //     string message = bufferedRecord.FormattedMessage ?? string.Empty;
         //     WriteInternal(null, textWriter, message, bufferedRecord.LogLevel, bufferedRecord.EventId.Id, bufferedRecord.Exception, logEntry.Category, bufferedRecord.Timestamp);
+        //     return;
         // }
-        // else
-        // {
+
         string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
         if (logEntry.Exception is null && string.IsNullOrEmpty(message))
         {
@@ -63,14 +65,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         // We extract most of the work into a non-generic method to save code size. If this was left in the generic
         // method, we'd get generic specialization for all TState parameters, but that's unnecessary.
         WriteInternal(scopeProvider, textWriter, message, logEntry.LogLevel, logEntry.EventId.Id, logEntry.Exception?.ToString(), logEntry.Category, GetCurrentDateTime());
-        // }
-
-
-        // string? message = logEntry.Formatter?.Invoke(logEntry.State, logEntry.Exception);
-        // if (message is null)
-        // {
-        //     return;
-        // }
+        return;
     }
 
     private void WriteInternal(IExternalScopeProvider? scopeProvider, TextWriter textWriter, string message, LogLevel logLevel,
@@ -88,10 +83,13 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         if (timestamp != null)
         {
             textWriter.Write(timestamp);
+            textWriter.Write(_separator);
         }
+
         if (logLevelString != null)
         {
-            WriteColoredMessage(textWriter, logLevelString, logLevelColors.Background, logLevelColors.Foreground);
+            WriteColoredMessage(textWriter, logLevelString, logLevelColors.Background, logLevelColors.Foreground, LogLevelReverseParser.MaxWidth);
+            textWriter.Write(_separator);
         }
 
         bool singleLine = _formatterOptions.SingleLine;
@@ -101,9 +99,8 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         //       Request received
 
         // category and event id
-        textWriter.Write(LoglevelPadding);
-        textWriter.Write(category);
-        textWriter.Write('[');
+        WriteCategory(textWriter, category);
+        textWriter.Write(_separator);
 
 #if NET
             Span<char> span = stackalloc char[10];
@@ -113,7 +110,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 #endif
         textWriter.Write(eventId.ToString());
 
-        textWriter.Write(']');
+        textWriter.Write(_separator);
         if (!singleLine)
         {
             textWriter.Write(Environment.NewLine);
@@ -135,6 +132,22 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         {
             textWriter.Write(Environment.NewLine);
         }
+    }
+
+    private void WriteCategory(TextWriter textWriter, string category)
+    {
+        if (_formatterOptions.CategoryMode == LoggerCategoryMode.Default || _formatterOptions.CategoryMode == LoggerCategoryMode.Short)
+        {
+            int lastIndexOfPeriod = category.LastIndexOf('.');
+            if (lastIndexOfPeriod >= 0)
+            {
+                textWriter.Write(category.Substring(lastIndexOfPeriod + 1));
+                return;
+            }
+        }
+
+        textWriter.Write(category);
+        return;
     }
 
     private static void WriteMessage(TextWriter textWriter, string message, bool singleLine)
@@ -295,7 +308,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             ? (_formatterOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now)
             : DateTimeOffset.MinValue;
 
-    private static void WriteColoredMessage(TextWriter textWriter, string message, ConsoleColor? background, ConsoleColor? foreground)
+    private static void WriteColoredMessage(TextWriter textWriter, string message, ConsoleColor? background, ConsoleColor? foreground, int width)
     {
         // Order: backgroundcolor, foregroundcolor, Message, reset foregroundcolor, reset backgroundcolor
         if (background.HasValue)
@@ -306,7 +319,13 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         {
             textWriter.Write(AnsiParser.GetForegroundColorEscapeCode(foreground.Value));
         }
-        textWriter.Write(message);
+
+        string paddedString = message;
+        if (width > 0)
+        {
+            paddedString = message.PadRight(width);
+        }
+        textWriter.Write(paddedString);
         if (foreground.HasValue)
         {
             textWriter.Write(AnsiParser.DefaultForegroundColor); // reset to default foreground color
