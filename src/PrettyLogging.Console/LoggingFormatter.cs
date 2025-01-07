@@ -12,11 +12,16 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 {
     public const string InternalName = "PrettyLogging.Console";
     private const string LoglevelPadding = ": ";
-    private string GetMessagePadding()
-    {
-      return new string(' ', LogLevelReverseParser.  + LoglevelPadding.Length);  _
-    } 
-        
+    private static string _messagePadding = new(' ', LogLevelReverseParser.MaxWidth + LoglevelPadding.Length);
+    private static readonly string _newLineWithMessagePadding = Environment.NewLine + _messagePadding;
+
+#if NET
+    private static bool IsAndroidOrAppleMobile => OperatingSystem.IsAndroid() ||
+                                                    OperatingSystem.IsTvOS() ||
+                                                    OperatingSystem.IsIOS(); // returns true on MacCatalyst
+#else
+    private static bool IsAndroidOrAppleMobile => false;
+#endif
 
     private bool _isDisposed;
     private readonly IDisposable? _optionsReloadToken;
@@ -42,23 +47,23 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {
-        if (logEntry.State is BufferedLogRecord bufferedRecord)
+        // if (logEntry.State is BufferedLogRecord bufferedRecord)
+        // {
+        //     string message = bufferedRecord.FormattedMessage ?? string.Empty;
+        //     WriteInternal(null, textWriter, message, bufferedRecord.LogLevel, bufferedRecord.EventId.Id, bufferedRecord.Exception, logEntry.Category, bufferedRecord.Timestamp);
+        // }
+        // else
+        // {
+        string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
+        if (logEntry.Exception is null && string.IsNullOrEmpty(message))
         {
-            string message = bufferedRecord.FormattedMessage ?? string.Empty;
-            WriteInternal(null, textWriter, message, bufferedRecord.LogLevel, bufferedRecord.EventId.Id, bufferedRecord.Exception, logEntry.Category, bufferedRecord.Timestamp);
+            return;
         }
-        else
-        {
-            string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
-            if (logEntry.Exception is null && string.IsNullOrEmpty(message))
-            {
-                return;
-            }
 
-            // We extract most of the work into a non-generic method to save code size. If this was left in the generic
-            // method, we'd get generic specialization for all TState parameters, but that's unnecessary.
-            WriteInternal(scopeProvider, textWriter, message, logEntry.LogLevel, logEntry.EventId.Id, logEntry.Exception?.ToString(), logEntry.Category, GetCurrentDateTime());
-        }
+        // We extract most of the work into a non-generic method to save code size. If this was left in the generic
+        // method, we'd get generic specialization for all TState parameters, but that's unnecessary.
+        WriteInternal(scopeProvider, textWriter, message, logEntry.LogLevel, logEntry.EventId.Id, logEntry.Exception?.ToString(), logEntry.Category, GetCurrentDateTime());
+        // }
 
 
         // string? message = logEntry.Formatter?.Invoke(logEntry.State, logEntry.Exception);
@@ -132,6 +137,31 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         }
     }
 
+    private static void WriteMessage(TextWriter textWriter, string message, bool singleLine)
+    {
+        if (!string.IsNullOrEmpty(message))
+        {
+            if (singleLine)
+            {
+                textWriter.Write(' ');
+                WriteReplacing(textWriter, Environment.NewLine, " ", message);
+            }
+            else
+            {
+                textWriter.Write(_messagePadding);
+                WriteReplacing(textWriter, Environment.NewLine, _newLineWithMessagePadding, message);
+                textWriter.Write(Environment.NewLine);
+            }
+        }
+
+        static void WriteReplacing(TextWriter writer, string oldValue, string newValue, string message)
+        {
+            string newMessage = message.Replace(oldValue, newValue);
+            writer.Write(newMessage);
+        }
+    }
+
+
     private ConsoleColors GetLogLevelConsoleColors(LogLevel logLevel)
     {
         // We shouldn't be outputting color codes for Android/Apple mobile platforms,
@@ -175,7 +205,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         if (_formatterOptions.ShowLogLevel)
         {
             OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
-            textWriter.Write(_logLevelReverseParser.GetString(logEntry.LogLevel).PadRight(_logLevelReverseParser.MaxWidth, ' '));
+            textWriter.Write(_logLevelReverseParser.GetString(logEntry.LogLevel).PadRight(LogLevelReverseParser.MaxWidth, ' '));
         }
 
         if (_formatterOptions.LogManagedThreadId)
@@ -219,32 +249,32 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         isFirstSection = false;
     }
 
-        private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider? scopeProvider, bool singleLine)
+    private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider? scopeProvider, bool singleLine)
+    {
+        if (_formatterOptions.IncludeScopes && scopeProvider is not null)
         {
-            if (_formatterOptions.IncludeScopes && scopeProvider is not null)
+            bool paddingNeeded = !singleLine;
+            scopeProvider.ForEachScope((scope, state) =>
             {
-                bool paddingNeeded = !singleLine;
-                scopeProvider.ForEachScope((scope, state) =>
+                if (paddingNeeded)
                 {
-                    if (paddingNeeded)
-                    {
-                        paddingNeeded = false;
-                        state.Write(_messagePadding);
-                        state.Write("=> ");
-                    }
-                    else
-                    {
-                        state.Write(" => ");
-                    }
-                    state.Write(scope);
-                }, textWriter);
- 
-                if (!paddingNeeded && !singleLine)
-                {
-                    textWriter.Write(Environment.NewLine);
+                    paddingNeeded = false;
+                    state.Write(_messagePadding);
+                    state.Write("=> ");
                 }
+                else
+                {
+                    state.Write(" => ");
+                }
+                state.Write(scope);
+            }, textWriter);
+
+            if (!paddingNeeded && !singleLine)
+            {
+                textWriter.Write(Environment.NewLine);
             }
         }
+    }
 
     private string GetLogLevelString(LogLevel logLevel) => _logLevelReverseParser.GetString(logLevel);
 

@@ -17,7 +17,7 @@ internal sealed class LogLevelReverseParser
 
     public string GetString(LogLevel logLevel) => _mapping[logLevel];
 
-    public int MaxWidth { get; } = _mapping.Values.Max(item => item.Length);
+    public static int MaxWidth { get; } = _mapping.Values.Max(item => item.Length);
 
     private static Dictionary<LogLevel, string> CreateMapping()
     {
