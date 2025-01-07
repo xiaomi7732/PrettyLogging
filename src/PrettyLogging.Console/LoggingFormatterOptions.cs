@@ -14,5 +14,13 @@ public class LoggingFormatterOptions : ConsoleFormatterOptions
 
     public bool ShowLogLevel { get; set; } = true;
 
-    public bool LogManagedThreadId { get; set; }
+    public bool ShowEventId { get; set; } = false;
+
+    public bool ShowManagedThreadId { get; set; }
+
+    public bool SingleLine { get; set; } = true;
+
+    public LoggerCategoryMode CategoryMode { get; set; } = LoggerCategoryMode.None;
+
+    public LoggerColorBehavior ColorBehavior { get; set; } = LoggerColorBehavior.Default;
 }

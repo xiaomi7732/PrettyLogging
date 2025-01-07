@@ -12,21 +12,33 @@ using ILoggerFactory factory = LoggerFactory.Create(builder =>
 #else
     builder.AddSimpleConsole().PrettyIt(opt =>
     {
-        opt.LogManagedThreadId = true;
-        opt.IncludeScopes = true;
+        opt.ShowLogLevel = true;
+        opt.ShowEventId = false;
+        opt.ShowManagedThreadId = false;
+        opt.SingleLine = true;
+        opt.IncludeScopes = false;
+        opt.CategoryMode = PrettyLogging.Console.LoggerCategoryMode.None;
+        opt.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
+    
     });
 #endif
+
+    builder.SetMinimumLevel(LogLevel.Trace);
 });
 
 // Create a logger as normal
-ILogger logger = factory.CreateLogger<Program>();
+ILogger logger = factory.CreateLogger("444.Program");
 
 // Use logger
 using (logger.BeginScope("Scope"))
 {
+    logger.LogTrace("Trace it!");
+    logger.LogDebug("Log Debug!");
     using (logger.BeginScope("Scope2"))
     {
         logger.LogInformation("Hello {name}", "Pretty Logging");
     }
     logger.LogWarning("This is a warning!");
+    logger.LogError(new InvalidOperationException(), "Demo of an exception!");
+    logger.LogCritical("Critical error!");
 }
