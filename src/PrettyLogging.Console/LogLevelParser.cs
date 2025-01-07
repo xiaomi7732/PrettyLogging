@@ -24,7 +24,7 @@ internal sealed class LogLevelReverseParser
         return new Dictionary<LogLevel, string>
         {
             [LogLevel.Critical] = "CRIT",
-            [LogLevel.Error] = "ERR",
+            [LogLevel.Error] = "ERROR",
             [LogLevel.Warning] = "WARN",
             [LogLevel.Information] = "INFO",
             [LogLevel.Debug] = "DEBUG",

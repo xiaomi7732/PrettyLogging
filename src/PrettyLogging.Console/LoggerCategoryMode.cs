@@ -2,7 +2,7 @@ namespace PrettyLogging.Console;
 
 public enum LoggerCategoryMode
 {
-    Default,
+    None,
     Short,
     Full,
 }

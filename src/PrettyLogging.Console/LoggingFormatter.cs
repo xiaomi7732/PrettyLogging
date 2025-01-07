@@ -99,21 +99,33 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         //       Request received
 
         // category and event id
-        WriteCategory(textWriter, category);
-        textWriter.Write(_separator);
+        if (WriteCategory(textWriter, category))
+        {
+            textWriter.Write(_separator);
+        }
 
+        if (_formatterOptions.ShowEventId)
+        {
 #if NET
             Span<char> span = stackalloc char[10];
             if (eventId.TryFormat(span, out int charsWritten))
                 textWriter.Write(span.Slice(0, charsWritten));
             else
 #endif
-        textWriter.Write(eventId.ToString());
+            textWriter.Write(eventId.ToString());
 
-        textWriter.Write(_separator);
+            textWriter.Write(_separator);
+        }
+
         if (!singleLine)
         {
             textWriter.Write(Environment.NewLine);
+        }
+
+        if (_formatterOptions.ShowManagedThreadId)
+        {
+            textWriter.Write($"{Thread.CurrentThread.ManagedThreadId}");
+            textWriter.Write(_separator);
         }
 
         // scope information
@@ -134,20 +146,25 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         }
     }
 
-    private void WriteCategory(TextWriter textWriter, string category)
+    private bool WriteCategory(TextWriter textWriter, string category)
     {
-        if (_formatterOptions.CategoryMode == LoggerCategoryMode.Default || _formatterOptions.CategoryMode == LoggerCategoryMode.Short)
+        if (_formatterOptions.CategoryMode == LoggerCategoryMode.None)
+        {
+            return false;
+        }
+
+        string effectiveCategory = category;
+        if (_formatterOptions.CategoryMode == LoggerCategoryMode.Short)
         {
             int lastIndexOfPeriod = category.LastIndexOf('.');
             if (lastIndexOfPeriod >= 0)
             {
-                textWriter.Write(category.Substring(lastIndexOfPeriod + 1));
-                return;
+                effectiveCategory = category.Substring(lastIndexOfPeriod + 1);
             }
         }
 
-        textWriter.Write(category);
-        return;
+        textWriter.Write(effectiveCategory);
+        return effectiveCategory.Length > 0;
     }
 
     private static void WriteMessage(TextWriter textWriter, string message, bool singleLine)
@@ -174,7 +191,6 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         }
     }
 
-
     private ConsoleColors GetLogLevelConsoleColors(LogLevel logLevel)
     {
         // We shouldn't be outputting color codes for Android/Apple mobile platforms,
@@ -197,69 +213,6 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             LogLevel.Critical => new ConsoleColors(ConsoleColor.White, ConsoleColor.DarkRed),
             _ => new ConsoleColors(null, null)
         };
-    }
-
-    private void WriteSuffix<TState>(LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
-    {
-        // TODO: Adding more customizations
-        return;
-    }
-
-    private void WritePrefix<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
-    {
-        bool firstSection = true;
-
-        if (!string.IsNullOrEmpty(_formatterOptions.TimestampFormat))
-        {
-            OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
-            textWriter.Write(string.Format($"{{0:{_formatterOptions.TimestampFormat}}}", _formatterOptions.UseUtcTimestamp ? DateTime.UtcNow : DateTime.Now));
-        }
-
-        if (_formatterOptions.ShowLogLevel)
-        {
-            OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
-            textWriter.Write(_logLevelReverseParser.GetString(logEntry.LogLevel).PadRight(LogLevelReverseParser.MaxWidth, ' '));
-        }
-
-        if (_formatterOptions.LogManagedThreadId)
-        {
-            OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
-            textWriter.Write($"{Thread.CurrentThread.ManagedThreadId}");
-        }
-
-        if (!firstSection)
-        {
-            OutputSeparatorAndMutateFirstSection(textWriter, ref firstSection);
-        }
-
-        if (_formatterOptions.IncludeScopes && scopeProvider is not null)
-        {
-            bool writeScope = false;
-            scopeProvider.ForEachScope((obj, state) =>
-            {
-                if (obj is null)
-                {
-                    return;
-                }
-                writeScope = true;
-                textWriter.Write($"=>{obj}");
-            }, logEntry.State);
-
-            if (writeScope)
-            {
-                bool isFirstSection = false;
-                OutputSeparatorAndMutateFirstSection(textWriter, ref isFirstSection);
-            }
-        }
-    }
-
-    private void OutputSeparatorAndMutateFirstSection(TextWriter textWriter, ref bool isFirstSection)
-    {
-        if (!isFirstSection)
-        {
-            textWriter.Write("|");
-        }
-        isFirstSection = false;
     }
 
     private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider? scopeProvider, bool singleLine)
