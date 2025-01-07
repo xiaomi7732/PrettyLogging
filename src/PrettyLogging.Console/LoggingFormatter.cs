@@ -11,6 +11,12 @@ namespace PrettyLogging.Console;
 internal class LoggingFormatter : ConsoleFormatter, IDisposable
 {
     public const string InternalName = "PrettyLogging.Console";
+    private const string LoglevelPadding = ": ";
+    private string GetMessagePadding()
+    {
+      return new string(' ', LogLevelReverseParser.  + LoglevelPadding.Length);  _
+    } 
+        
 
     private bool _isDisposed;
     private readonly IDisposable? _optionsReloadToken;
@@ -80,7 +86,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         }
         if (logLevelString != null)
         {
-            textWriter.WriteColoredMessage(logLevelString, logLevelColors.Background, logLevelColors.Foreground);
+            WriteColoredMessage(textWriter, logLevelString, logLevelColors.Background, logLevelColors.Foreground);
         }
 
         bool singleLine = _formatterOptions.SingleLine;
@@ -130,8 +136,8 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
     {
         // We shouldn't be outputting color codes for Android/Apple mobile platforms,
         // they have no shell (adb shell is not meant for running apps) and all the output gets redirected to some log file.
-        bool disableColors = (FormatterOptions.ColorBehavior == LoggerColorBehavior.Disabled) ||
-            (FormatterOptions.ColorBehavior == LoggerColorBehavior.Default && (!ConsoleUtils.EmitAnsiColorCodes || IsAndroidOrAppleMobile));
+        bool disableColors = (_formatterOptions.ColorBehavior == LoggerColorBehavior.Disabled) ||
+            (_formatterOptions.ColorBehavior == LoggerColorBehavior.Default && (!ConsoleUtils.EmitAnsiColorCodes || IsAndroidOrAppleMobile));
         if (disableColors)
         {
             return new ConsoleColors(null, null);
@@ -212,6 +218,33 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         }
         isFirstSection = false;
     }
+
+        private void WriteScopeInformation(TextWriter textWriter, IExternalScopeProvider? scopeProvider, bool singleLine)
+        {
+            if (_formatterOptions.IncludeScopes && scopeProvider is not null)
+            {
+                bool paddingNeeded = !singleLine;
+                scopeProvider.ForEachScope((scope, state) =>
+                {
+                    if (paddingNeeded)
+                    {
+                        paddingNeeded = false;
+                        state.Write(_messagePadding);
+                        state.Write("=> ");
+                    }
+                    else
+                    {
+                        state.Write(" => ");
+                    }
+                    state.Write(scope);
+                }, textWriter);
+ 
+                if (!paddingNeeded && !singleLine)
+                {
+                    textWriter.Write(Environment.NewLine);
+                }
+            }
+        }
 
     private string GetLogLevelString(LogLevel logLevel) => _logLevelReverseParser.GetString(logLevel);
 
