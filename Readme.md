@@ -2,7 +2,7 @@
 
 Make `Microsoft.Extensions.Logging` easier on the eyes!
 
-## ⭐ me if you like it
+## ⭐ me if you like it ![GitHub Repo stars](https://img.shields.io/github/stars/xiaomi7732/PrettyLogging?style=plastic)
 
 If you like this project, please ⭐️ it by clicking the star in the top-right corner to help others discover it!
 
