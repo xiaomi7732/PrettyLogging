@@ -19,17 +19,14 @@ internal sealed class LogLevelReverseParser
 
     public static int MaxWidth { get; } = _mapping.Values.Max(item => item.Length);
 
-    private static Dictionary<LogLevel, string> CreateMapping()
+    private static Dictionary<LogLevel, string> CreateMapping() => new()
     {
-        return new Dictionary<LogLevel, string>
-        {
-            [LogLevel.Critical] = "CRIT",
-            [LogLevel.Error] = "ERROR",
-            [LogLevel.Warning] = "WARN",
-            [LogLevel.Information] = "INFO",
-            [LogLevel.Debug] = "DEBUG",
-            [LogLevel.Trace] = "TRACE",
-            [LogLevel.None] = "NONE",
-        };
-    }
+        [LogLevel.Critical] = "crit",
+        [LogLevel.Error] = "error",
+        [LogLevel.Warning] = "warn",
+        [LogLevel.Information] = "info",
+        [LogLevel.Debug] = "debug",
+        [LogLevel.Trace] = "trace",
+        [LogLevel.None] = "none",
+    };
 }
