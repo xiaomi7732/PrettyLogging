@@ -33,13 +33,14 @@ ILogger logger = factory.CreateLogger("444.Program");
 // Use logger
 using (logger.BeginScope("Scope"))
 {
-    logger.LogTrace("Trace it!");
-    logger.LogDebug("Log Debug!");
+    logger.LogTrace("This is a TRACE message.");
+    logger.LogDebug("This is a DEBUG message.");
     using (logger.BeginScope("Scope2"))
     {
-        logger.LogInformation("Hello {name}", "Pretty Logging");
+        logger.LogInformation("This is an INFO message.");
     }
-    logger.LogWarning("This is a warning!");
-    logger.LogError(new InvalidOperationException(), "Demo of an exception!");
-    logger.LogCritical("Critical error!");
+    logger.LogWarning("This is a WARNING message!");
+    logger.LogError("This is an ERROR message!");
+    logger.LogCritical("This is a CRITICAL message!");
+    logger.LogError(new InvalidOperationException(), "This error includes an exception!");
 }
