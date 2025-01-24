@@ -242,7 +242,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         }
     }
 
-    private string GetLogLevelString(LogLevel logLevel) => _logLevelReverseParser.GetString(logLevel);
+    private string GetLogLevelString(LogLevel logLevel) => _logLevelReverseParser.GetString(logLevel, _formatterOptions.LogLevelCase);
 
     private readonly struct ConsoleColors
     {
