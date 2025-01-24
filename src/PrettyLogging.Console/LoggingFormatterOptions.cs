@@ -20,6 +20,8 @@ public class LoggingFormatterOptions : ConsoleFormatterOptions
 
     public bool SingleLine { get; set; } = true;
 
+    public LogLevelCase LogLevelCase { get; set; } = LogLevelCase.Upper;
+
     public LoggerCategoryMode CategoryMode { get; set; } = LoggerCategoryMode.None;
 
     public LoggerColorBehavior ColorBehavior { get; set; } = LoggerColorBehavior.Default;
