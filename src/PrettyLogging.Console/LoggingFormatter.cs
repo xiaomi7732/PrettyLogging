@@ -76,7 +76,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 
         string? timestamp = null;
         string? timestampFormat = _formatterOptions.TimestampFormat;
-        if (timestampFormat != null)
+        if (timestampFormat != null && _formatterOptions.ShowTimestamp)
         {
             timestamp = stamp.ToString(timestampFormat);
         }
