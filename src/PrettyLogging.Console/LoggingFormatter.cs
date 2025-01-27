@@ -48,11 +48,11 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {
-
+        string message;
 #if NET9_0_OR_GREATER
         if (logEntry.State is BufferedLogRecord bufferedRecord)
         {
-            string message = bufferedRecord.FormattedMessage ?? string.Empty;
+            message = bufferedRecord.FormattedMessage ?? string.Empty;
             WriteInternal(null, textWriter, message, bufferedRecord.LogLevel, bufferedRecord.EventId.Id, bufferedRecord.Exception, logEntry.Category, bufferedRecord.Timestamp);
             return;
         }
@@ -64,7 +64,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             return;
         }
 
-        string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
+        message = logEntry.Formatter(logEntry.State, logEntry.Exception);
         if (logEntry.Exception is null && string.IsNullOrEmpty(message))
         {
             return;
