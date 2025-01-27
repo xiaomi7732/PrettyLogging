@@ -48,17 +48,23 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {
-        string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
 
 #if NET9_0_OR_GREATER
         if (logEntry.State is BufferedLogRecord bufferedRecord)
         {
-            message = bufferedRecord.FormattedMessage ?? string.Empty;
+            string message = bufferedRecord.FormattedMessage ?? string.Empty;
             WriteInternal(null, textWriter, message, bufferedRecord.LogLevel, bufferedRecord.EventId.Id, bufferedRecord.Exception, logEntry.Category, bufferedRecord.Timestamp);
             return;
         }
 #endif
 
+        // TODO: What to do when logEntry.Formatter is null?
+        if(logEntry.Formatter is null)
+        {
+            return;
+        }
+
+        string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
         if (logEntry.Exception is null && string.IsNullOrEmpty(message))
         {
             return;
@@ -114,7 +120,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
                 textWriter.Write(span.Slice(0, charsWritten));
             else
 #endif
-                textWriter.Write(eventId.ToString());
+            textWriter.Write(eventId.ToString());
 
             textWriter.Write(_separator);
         }
