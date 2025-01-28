@@ -48,15 +48,23 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {
-        // TODO: Support BufferedLogRecord for .NET 9 or later.
-        // if (logEntry.State is BufferedLogRecord bufferedRecord)
-        // {
-        //     string message = bufferedRecord.FormattedMessage ?? string.Empty;
-        //     WriteInternal(null, textWriter, message, bufferedRecord.LogLevel, bufferedRecord.EventId.Id, bufferedRecord.Exception, logEntry.Category, bufferedRecord.Timestamp);
-        //     return;
-        // }
+        string message;
+#if NET9_0_OR_GREATER
+        if (logEntry.State is BufferedLogRecord bufferedRecord)
+        {
+            message = bufferedRecord.FormattedMessage ?? string.Empty;
+            WriteInternal(null, textWriter, message, bufferedRecord.LogLevel, bufferedRecord.EventId.Id, bufferedRecord.Exception, logEntry.Category, bufferedRecord.Timestamp);
+            return;
+        }
+#endif
 
-        string message = logEntry.Formatter(logEntry.State, logEntry.Exception);
+        // TODO: What to do when logEntry.Formatter is null?
+        if(logEntry.Formatter is null)
+        {
+            return;
+        }
+
+        message = logEntry.Formatter(logEntry.State, logEntry.Exception);
         if (logEntry.Exception is null && string.IsNullOrEmpty(message))
         {
             return;
