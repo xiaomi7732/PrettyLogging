@@ -36,6 +36,10 @@ Got ideas or found a bug? Feel free to open an issue and share your feedback!
 
     If you are using this with an **Console application**, check out this [Program.cs](examples/UsePrettyLogging.Console/Program.cs).
 
+1. Optionally, customize it:
+
+    You can customize log output by controlling options such as log level visibility, timestamp inclusion, log format (single-line or multi-line), color behavior and more. See [Options.md](docs/Options.md) for more details.
+
 1. Enjoy the clean output
 
     * Console application
