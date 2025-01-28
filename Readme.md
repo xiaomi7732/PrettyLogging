@@ -2,7 +2,7 @@
 
 Make `Microsoft.Extensions.Logging` easier on the eyes!
 
-![A image shows the logging output](./docs/images/logging.png)
+![A image shows the logging output](https://raw.githubusercontent.com/xiaomi7732/PrettyLogging/main/docs/images/logging.png)
 
 ## ⭐ if you like it ![GitHub Repo stars](https://img.shields.io/github/stars/xiaomi7732/PrettyLogging?style=plastic)
 
