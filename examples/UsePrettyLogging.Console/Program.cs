@@ -17,9 +17,9 @@ using ILoggerFactory factory = LoggerFactory.Create(builder =>
         opt.ShowManagedThreadId = false;
         opt.SingleLine = true;
         opt.IncludeScopes = false;
-        opt.ShowTimestamp = false;
+        opt.ShowTimestamp = true;
         opt.LogLevelCase = PrettyLogging.Console.LogLevelCase.Upper;
-        opt.CategoryMode = PrettyLogging.Console.LoggerCategoryMode.None;
+        opt.CategoryMode = PrettyLogging.Console.LoggerCategoryMode.Short;
         opt.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
     
     });
