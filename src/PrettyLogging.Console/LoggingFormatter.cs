@@ -59,7 +59,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
 #endif
 
         // TODO: What to do when logEntry.Formatter is null?
-        if(logEntry.Formatter is null)
+        if (logEntry.Formatter is null)
         {
             return;
         }
@@ -106,8 +106,8 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         // info: ConsoleApp.Program[10]
         //       Request received
 
-        // category and event id
-        if (WriteCategory(textWriter, category))
+        // category and event id for multiple lines
+        if (!singleLine && WriteCategory(textWriter, category, prefix: string.Empty))
         {
             textWriter.Write(_separator);
         }
@@ -125,15 +125,15 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             textWriter.Write(_separator);
         }
 
-        if (!singleLine)
-        {
-            textWriter.Write(Environment.NewLine);
-        }
-
         if (_formatterOptions.ShowManagedThreadId)
         {
             textWriter.Write($"{Thread.CurrentThread.ManagedThreadId}");
             textWriter.Write(_separator);
+        }
+
+        if (!singleLine)
+        {
+            textWriter.Write(Environment.NewLine);
         }
 
         // scope information
@@ -148,13 +148,16 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             // exception message
             WriteMessage(textWriter, exception, singleLine);
         }
+
         if (singleLine)
         {
+            // Category on the tail for singleline logging
+            WriteCategory(textWriter, category, $" {_separator} ");
             textWriter.Write(Environment.NewLine);
         }
     }
 
-    private bool WriteCategory(TextWriter textWriter, string category)
+    private bool WriteCategory(TextWriter textWriter, string category, string prefix)
     {
         if (_formatterOptions.CategoryMode == LoggerCategoryMode.None)
         {
@@ -171,8 +174,15 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
             }
         }
 
+        if (string.IsNullOrEmpty(effectiveCategory))
+        {
+            return false;
+        }
+
+        textWriter.Write(prefix);
         textWriter.Write(effectiveCategory);
-        return effectiveCategory.Length > 0;
+
+        return true;
     }
 
     private static void WriteMessage(TextWriter textWriter, string message, bool singleLine)
