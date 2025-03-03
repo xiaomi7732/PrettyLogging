@@ -1,6 +1,6 @@
 ﻿// Pick one of the 2 options to see the demo.
 #define IS_SIMPLE_EXAMPLE
-// #undef IS_SIMPLE_EXAMPLE
+#undef IS_SIMPLE_EXAMPLE
 
 using Microsoft.Extensions.Logging;
 
@@ -21,7 +21,7 @@ using ILoggerFactory factory = LoggerFactory.Create(builder =>
         opt.LogLevelCase = PrettyLogging.Console.LogLevelCase.Upper;
         opt.CategoryMode = PrettyLogging.Console.LoggerCategoryMode.Short;
         opt.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
-    
+        opt.TimestampFormat = "HH:mm:ss";
     });
 #endif
 
