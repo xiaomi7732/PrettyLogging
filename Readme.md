@@ -25,8 +25,16 @@ Got ideas or found a bug? Feel free to open an issue and share your feedback!
     Run the following command to add the pre-release version of the package:
 
     ```shell
-    dotnet add package PrettyLogging.Console --prerelease # TODO: Release a stable version.
+    dotnet add package PrettyLogging.Console
     ```
+
+1. Optionally, always keep up with the latest by using floating version:
+
+    ```xml
+    <PackageReference Include="PrettyLogging.Console" Version="[1.*-*, 2.0)" />
+    ```
+
+    See [UsePrettyLogging.Console.csproj](https://github.com/xiaomi7732/PrettyLogging/blob/757621b339f0ccd7d7fc47e97e8a87dddd8ed4ed/examples/UsePrettyLogging.Console/UsePrettyLogging.Console.csproj#L5) for example.
 
 1. Set up Pretty Logging in your app
 
