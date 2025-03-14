@@ -9,9 +9,9 @@ using UsePrettyLogging.ConsoleApp;
 using ILoggerFactory factory = LoggerFactory.Create(builder =>
 {
 #if IS_SIMPLE_EXAMPLE
-    builder.AddSimpleConsole().PrettyIt();
+    builder.PrettyIt();
 #else
-    builder.AddSimpleConsole().PrettyIt(opt =>
+    builder.PrettyIt(opt =>
     {
         opt.ShowLogLevel = true;
         opt.ShowEventId = false;

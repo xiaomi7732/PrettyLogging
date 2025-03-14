@@ -18,7 +18,7 @@ Got ideas or found a bug? Feel free to open an issue and share your feedback!
 
 1. Install the NuGet package:
 
-    Run the following command to add the pre-release version of the package:
+    Run the following command to add the package:
 
     ```shell
     dotnet add package PrettyLogging.Console
