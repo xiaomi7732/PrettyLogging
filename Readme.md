@@ -1,4 +1,4 @@
-# Pretty Logging
+# Pretty Logging [![NuGet Version](https://img.shields.io/nuget/vpre/PrettyLogging.Console?style=flat)](https://www.nuget.org/packages/PrettyLogging.Console)
 
 Make `Microsoft.Extensions.Logging` easier on the eyes!
 
@@ -13,10 +13,6 @@ Starting from version `1.0.1`, line breaks in single-line logs are now honored b
 If you like this project, please ⭐️ it by clicking the star in the top-right corner to help others discover it!
 
 Got ideas or found a bug? Feel free to open an issue and share your feedback!
-
-## Current version
-
-[![NuGet Version](https://img.shields.io/nuget/vpre/PrettyLogging.Console?style=flat)](https://www.nuget.org/packages/PrettyLogging.Console)
 
 ## Getting started
 
