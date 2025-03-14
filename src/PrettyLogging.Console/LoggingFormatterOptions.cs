@@ -22,6 +22,14 @@ public class LoggingFormatterOptions : ConsoleFormatterOptions
 
     public bool ShowTimestamp { get; set; } = true;
 
+    /// <summary>
+    /// Gets or sets whether to apply singleline in messages. Default to false.
+    /// When set to false, newline in the message will be honored, even when "SingleLine" is set to true.
+    /// When set to false, newline will be replaced by a space in "SingleLine" mode.
+    /// This value has no impact when "SingleLine" is set to false.
+    /// </summary>
+    public bool ApplySinglelineInMessage { get; set; } = false;
+
     public LogLevelCase LogLevelCase { get; set; } = LogLevelCase.Upper;
 
     public LoggerCategoryMode CategoryMode { get; set; } = LoggerCategoryMode.None;

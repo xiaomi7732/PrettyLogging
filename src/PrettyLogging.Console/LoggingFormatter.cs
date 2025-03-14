@@ -120,7 +120,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
                 textWriter.Write(span.Slice(0, charsWritten));
             else
 #endif
-            textWriter.Write(eventId.ToString());
+                textWriter.Write(eventId.ToString());
 
             textWriter.Write(_separator);
         }
@@ -185,14 +185,21 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         return true;
     }
 
-    private static void WriteMessage(TextWriter textWriter, string message, bool singleLine)
+    private void WriteMessage(TextWriter textWriter, string message, bool singleLine)
     {
         if (!string.IsNullOrEmpty(message))
         {
             if (singleLine)
             {
                 textWriter.Write(' ');
-                WriteReplacing(textWriter, Environment.NewLine, " ", message);
+                if (_formatterOptions.ApplySinglelineInMessage)
+                {
+                    WriteReplacing(textWriter, Environment.NewLine, " ", message);
+                }
+                else
+                {
+                    textWriter.Write(message);
+                }
             }
             else
             {
