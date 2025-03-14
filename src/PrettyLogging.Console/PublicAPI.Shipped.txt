@@ -1,0 +1,31 @@
+#nullable enable
+Microsoft.Extensions.Logging.ServiceCollectionExtensions
+PrettyLogging.Console.LoggerCategoryMode
+PrettyLogging.Console.LoggerCategoryMode.Full = 2 -> PrettyLogging.Console.LoggerCategoryMode
+PrettyLogging.Console.LoggerCategoryMode.None = 0 -> PrettyLogging.Console.LoggerCategoryMode
+PrettyLogging.Console.LoggerCategoryMode.Short = 1 -> PrettyLogging.Console.LoggerCategoryMode
+PrettyLogging.Console.LoggingFormatterOptions
+PrettyLogging.Console.LoggingFormatterOptions.ApplySinglelineInMessage.get -> bool
+PrettyLogging.Console.LoggingFormatterOptions.ApplySinglelineInMessage.set -> void
+PrettyLogging.Console.LoggingFormatterOptions.CategoryMode.get -> PrettyLogging.Console.LoggerCategoryMode
+PrettyLogging.Console.LoggingFormatterOptions.CategoryMode.set -> void
+PrettyLogging.Console.LoggingFormatterOptions.ColorBehavior.get -> Microsoft.Extensions.Logging.Console.LoggerColorBehavior
+PrettyLogging.Console.LoggingFormatterOptions.ColorBehavior.set -> void
+PrettyLogging.Console.LoggingFormatterOptions.LoggingFormatterOptions() -> void
+PrettyLogging.Console.LoggingFormatterOptions.LogLevelCase.get -> PrettyLogging.Console.LogLevelCase
+PrettyLogging.Console.LoggingFormatterOptions.LogLevelCase.set -> void
+PrettyLogging.Console.LoggingFormatterOptions.ShowEventId.get -> bool
+PrettyLogging.Console.LoggingFormatterOptions.ShowEventId.set -> void
+PrettyLogging.Console.LoggingFormatterOptions.ShowLogLevel.get -> bool
+PrettyLogging.Console.LoggingFormatterOptions.ShowLogLevel.set -> void
+PrettyLogging.Console.LoggingFormatterOptions.ShowManagedThreadId.get -> bool
+PrettyLogging.Console.LoggingFormatterOptions.ShowManagedThreadId.set -> void
+PrettyLogging.Console.LoggingFormatterOptions.ShowTimestamp.get -> bool
+PrettyLogging.Console.LoggingFormatterOptions.ShowTimestamp.set -> void
+PrettyLogging.Console.LoggingFormatterOptions.SingleLine.get -> bool
+PrettyLogging.Console.LoggingFormatterOptions.SingleLine.set -> void
+PrettyLogging.Console.LogLevelCase
+PrettyLogging.Console.LogLevelCase.Lower = 1 -> PrettyLogging.Console.LogLevelCase
+PrettyLogging.Console.LogLevelCase.Upper = 0 -> PrettyLogging.Console.LogLevelCase
+static Microsoft.Extensions.Logging.ServiceCollectionExtensions.AddPrettyConsole(this Microsoft.Extensions.Logging.ILoggingBuilder! loggingBuilder, System.Action<PrettyLogging.Console.LoggingFormatterOptions!>? options = null) -> Microsoft.Extensions.Logging.ILoggingBuilder!
+static Microsoft.Extensions.Logging.ServiceCollectionExtensions.PrettyIt(this Microsoft.Extensions.Logging.ILoggingBuilder! loggingBuilder, System.Action<PrettyLogging.Console.LoggingFormatterOptions!>? options = null) -> Microsoft.Extensions.Logging.ILoggingBuilder!

@@ -9,6 +9,7 @@
   <PropertyGroup>
     <PackageId>PrettyLogging.Console</PackageId>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
@@ -29,5 +30,6 @@
 
   <ItemGroup>
     <None Include="../../Readme.md" Pack="true" PackagePath="\" />
+    <None Include="../../icon.png" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>

@@ -4,6 +4,10 @@ Make `Microsoft.Extensions.Logging` easier on the eyes!
 
 ![A image shows the logging output](https://raw.githubusercontent.com/xiaomi7732/PrettyLogging/main/docs/images/logging.png)
 
+Starting from version `1.0.1`, line breaks in single-line logs are now honored by default.
+
+![A image shows the line breaker](https://raw.githubusercontent.com/xiaomi7732/PrettyLogging/main/docs/images/line-breaker-message.png)
+
 ## ⭐ if you like it ![GitHub Repo stars](https://img.shields.io/github/stars/xiaomi7732/PrettyLogging?style=plastic)
 
 If you like this project, please ⭐️ it by clicking the star in the top-right corner to help others discover it!

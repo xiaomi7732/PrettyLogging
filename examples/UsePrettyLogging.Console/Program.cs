@@ -3,6 +3,7 @@
 #undef IS_SIMPLE_EXAMPLE
 
 using Microsoft.Extensions.Logging;
+using UsePrettyLogging.ConsoleApp;
 
 // Register
 using ILoggerFactory factory = LoggerFactory.Create(builder =>
@@ -22,6 +23,7 @@ using ILoggerFactory factory = LoggerFactory.Create(builder =>
         opt.CategoryMode = PrettyLogging.Console.LoggerCategoryMode.Short;
         opt.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
         opt.TimestampFormat = "HH:mm:ss";
+        // opt.ApplySinglelineInMessage = false;
     });
 #endif
 
@@ -34,14 +36,22 @@ ILogger logger = factory.CreateLogger("444.Program");
 // Use logger
 using (logger.BeginScope("Scope"))
 {
-    logger.LogTrace("This is a TRACE message.");
-    logger.LogDebug("This is a DEBUG message.");
-    using (logger.BeginScope("Scope2"))
+    try
     {
-        logger.LogInformation("This is an INFO message.");
+        logger.LogTrace("This is a TRACE message.");
+        logger.LogDebug("This is a DEBUG message.");
+        using (logger.BeginScope("Scope2"))
+        {
+            logger.LogInformation("This is an INFO message.");
+        }
+        logger.LogWarning("This is a WARNING message!");
+        logger.LogError("This is an ERROR message!");
+        logger.LogCritical("This is a CRITICAL message!");
+
+        Thrower.ThrowAnException();
     }
-    logger.LogWarning("This is a WARNING message!");
-    logger.LogError("This is an ERROR message!");
-    logger.LogCritical("This is a CRITICAL message!");
-    logger.LogError(new InvalidOperationException(), "This error includes an exception!");
+    catch (Exception ex)
+    {
+        logger.LogError(ex, "This error includes an exception!");
+    }
 }
