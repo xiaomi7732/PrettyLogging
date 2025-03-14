@@ -1,6 +1,5 @@
 <Project>
-    <Import
-        Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
+    <Import Project="$([MSBuild]::GetPathOfFileAbove('Directory.Build.props', '$(MSBuildThisFileDirectory)../'))" />
 
     <!-- Common NuGet Package -->
     <PropertyGroup>
@@ -14,5 +13,13 @@
         <Copyright>Copyright (c) Saar 2025.</Copyright>
         <PackageProjectUrl>https://github.com/xiaomi7732/PrettyLogging</PackageProjectUrl>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <EnablePublicApiAnalyzers Condition=" '$(EnablePublicApiAnalyzers)' == '' ">true</EnablePublicApiAnalyzers>
     </PropertyGroup>
+
+    <ItemGroup Condition=" '$(EnablePublicApiAnalyzers)' == 'true' ">
+        <PackageReference Include="Microsoft.CodeAnalysis.PublicApiAnalyzers">
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+    </ItemGroup>
 </Project>
