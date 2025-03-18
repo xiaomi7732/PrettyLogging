@@ -83,11 +83,16 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         string logLevelString = GetLogLevelString(logLevel);
 
         string? timestamp = null;
-        string? timestampFormat = _formatterOptions.TimestampFormat;
-        if (timestampFormat != null && _formatterOptions.ShowTimestamp)
+        if (_formatterOptions.ShowTimestamp)
         {
+            string? timestampFormat = _formatterOptions.TimestampFormat;
+            if(string.IsNullOrEmpty(timestampFormat))
+            {
+                timestampFormat = _formatterOptions.UseUtcTimestamp ? "o" : "HH:mm:ss.fff";
+            }
             timestamp = stamp.ToString(timestampFormat);
         }
+
         if (timestamp != null)
         {
             textWriter.Write(timestamp);
@@ -282,7 +287,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         public ConsoleColor? Background { get; }
     }
 
-    private DateTimeOffset GetCurrentDateTime() => _formatterOptions.TimestampFormat != null
+    private DateTimeOffset GetCurrentDateTime() => _formatterOptions.ShowTimestamp 
             ? (_formatterOptions.UseUtcTimestamp ? DateTimeOffset.UtcNow : DateTimeOffset.Now)
             : DateTimeOffset.MinValue;
 
