@@ -4,5 +4,6 @@
         "codewithsaar",
         "foregroundcolor",
         "netstandard"
-    ]
+    ],
+    "dotnet.defaultSolution": "PrettyLogging.slnx"
 }

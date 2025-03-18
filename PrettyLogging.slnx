@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/examples/">
+    <Project Path="examples/UsePrettyLogging.Console.Fx/UsePrettyLogging.Console.Fx.csproj" />
+    <Project Path="examples/UsePrettyLogging.Console/UsePrettyLogging.Console.csproj" />
+    <Project Path="examples/UsePrettyLogging.WebAPI/UsePrettyLogging.WebAPI.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/PrettyLogging.Console/PrettyLogging.Console.csproj" />
+  </Folder>
+</Solution>
