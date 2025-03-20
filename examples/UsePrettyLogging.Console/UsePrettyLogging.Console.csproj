@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\PrettyLogging.Console\PrettyLogging.Console.csproj" />
-    <!-- <PackageReference Include="PrettyLogging.Console" Version="1.*-*" /> -->
+    <!-- <ProjectReference Include="..\..\src\PrettyLogging.Console\PrettyLogging.Console.csproj" /> -->
+    <PackageReference Include="PrettyLogging.Console" Version="[1.*-*, 2.0)" />
   </ItemGroup>
 
   <PropertyGroup>
