@@ -4,14 +4,6 @@ namespace PrettyLogging.Console;
 
 public class LoggingFormatterOptions : ConsoleFormatterOptions
 {
-    public LoggingFormatterOptions()
-    {
-        if (string.IsNullOrEmpty(TimestampFormat))
-        {
-            TimestampFormat = "o";
-        }
-    }
-
     /// <summary>
     /// Gets or sets a value indicating whether to show the log level.
     /// </summary>

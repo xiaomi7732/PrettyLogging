@@ -22,7 +22,7 @@ using ILoggerFactory factory = LoggerFactory.Create(builder =>
         opt.LogLevelCase = PrettyLogging.Console.LogLevelCase.Upper;
         opt.CategoryMode = PrettyLogging.Console.LoggerCategoryMode.Short;
         opt.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Enabled;
-        opt.TimestampFormat = "HH:mm:ss";
+        opt.UseUtcTimestamp = false;
         // opt.ApplySinglelineInMessage = false;
     });
 #endif
