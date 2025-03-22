@@ -1,4 +1,5 @@
-# Pretty Logging [![NuGet Version](https://img.shields.io/nuget/vpre/PrettyLogging.Console?style=flat)](https://www.nuget.org/packages/PrettyLogging.Console)
+# Pretty Logging [![NuGet Version](https://img.shields.io/nuget/vpre/PrettyLogging.Console?style=flat) ![NuGet Downloads](https://img.shields.io/nuget/dt/PrettyLogging.Console) ](https://www.nuget.org/packages/PrettyLogging.Console) 
+
 
 Enhance the readability of `Microsoft.Extensions.Logging` output!
 
