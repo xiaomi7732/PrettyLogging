@@ -25,6 +25,7 @@ using ILoggerFactory factory = LoggerFactory.Create(builder =>
         opt.UseUtcTimestamp = false;
         // opt.ApplySinglelineInMessage = false;
     });
+    // builder.AddTestConsole();
 #endif
 
     builder.SetMinimumLevel(LogLevel.Trace);

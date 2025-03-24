@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <!-- <ProjectReference Include="..\..\src\PrettyLogging.Console\PrettyLogging.Console.csproj" /> -->
-    <PackageReference Include="PrettyLogging.Console" Version="[1.*-*, 2.0)" />
+    <ProjectReference Include="..\..\src\PrettyLogging.Console\PrettyLogging.Console.csproj" />
+    <!-- <PackageReference Include="PrettyLogging.Console" Version="[1.*-*, 2.0)" /> -->
   </ItemGroup>
 
   <PropertyGroup>
@@ -10,6 +10,7 @@
     <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <PublishAot>true</PublishAot>
   </PropertyGroup>
 
 </Project>
