@@ -27,10 +27,10 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
     private bool _isDisposed;
     private readonly IDisposable? _optionsReloadToken;
     private readonly LogLevelReverseParser _logLevelReverseParser;
-    private LoggingFormatterOptions _formatterOptions;
+    private PrettyLoggingFormatterOptions _formatterOptions;
 
     public LoggingFormatter(
-        IOptionsMonitor<LoggingFormatterOptions> options,
+        IOptionsMonitor<PrettyLoggingFormatterOptions> options,
         LogLevelReverseParser logLevelReverseParser
     ) : base(InternalName)
     {
@@ -44,7 +44,7 @@ internal class LoggingFormatter : ConsoleFormatter, IDisposable
         _logLevelReverseParser = logLevelReverseParser ?? throw new ArgumentNullException(nameof(logLevelReverseParser));
     }
 
-    private void OnOptionsChange(LoggingFormatterOptions options) => _formatterOptions = options;
+    private void OnOptionsChange(PrettyLoggingFormatterOptions options) => _formatterOptions = options;
 
     public override void Write<TState>(in LogEntry<TState> logEntry, IExternalScopeProvider? scopeProvider, TextWriter textWriter)
     {

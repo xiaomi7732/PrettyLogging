@@ -1,9 +1,14 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging.Console;
 
 namespace PrettyLogging.Console;
 
-public class LoggingFormatterOptions : ConsoleFormatterOptions
+public class PrettyLoggingFormatterOptions : ConsoleFormatterOptions
 {
+    public PrettyLoggingFormatterOptions()
+    {
+    }
+
     /// <summary>
     /// Gets or sets a value indicating whether to show the log level.
     /// </summary>
@@ -51,4 +56,6 @@ public class LoggingFormatterOptions : ConsoleFormatterOptions
     /// Gets or sets the color behavior for the logger.
     /// </summary>
     public LoggerColorBehavior ColorBehavior { get; set; } = LoggerColorBehavior.Default;
+
+    internal void Configure(IConfiguration configuration) => configuration.Bind(this);
 }

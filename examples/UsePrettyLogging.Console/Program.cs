@@ -26,7 +26,6 @@ using ILoggerFactory factory = LoggerFactory.Create(builder =>
         // opt.ApplySinglelineInMessage = false;
     });
 #endif
-
     builder.SetMinimumLevel(LogLevel.Trace);
 });
 
