@@ -2,7 +2,7 @@
 
   <ItemGroup>
     <!-- <ProjectReference Include="..\..\src\PrettyLogging.Console\PrettyLogging.Console.csproj" /> -->
-    <PackageReference Include="PrettyLogging.Console" Version="1.0.0-*" />
+    <PackageReference Include="PrettyLogging.Console" Version="1.*-*" />
   </ItemGroup>
 
   <PropertyGroup>

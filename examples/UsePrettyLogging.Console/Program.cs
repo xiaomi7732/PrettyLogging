@@ -6,12 +6,12 @@ using Microsoft.Extensions.Logging;
 using UsePrettyLogging.ConsoleApp;
 
 // Register
-using ILoggerFactory factory = LoggerFactory.Create(builder =>
+using ILoggerFactory factory = LoggerFactory.Create(configureLoggingFactory =>
 {
 #if IS_SIMPLE_EXAMPLE
-    builder.PrettyIt();
+    configureLoggingFactory.PrettyIt();
 #else
-    builder.PrettyIt(opt =>
+    configureLoggingFactory.PrettyIt(opt =>
     {
         opt.ShowLogLevel = true;
         opt.ShowEventId = false;
@@ -26,7 +26,7 @@ using ILoggerFactory factory = LoggerFactory.Create(builder =>
         // opt.ApplySinglelineInMessage = false;
     });
 #endif
-    builder.SetMinimumLevel(LogLevel.Trace);
+    configureLoggingFactory.SetMinimumLevel(LogLevel.Trace);
 });
 
 // Create a logger as normal
