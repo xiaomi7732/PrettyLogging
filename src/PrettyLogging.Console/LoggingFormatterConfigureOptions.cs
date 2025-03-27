@@ -7,16 +7,18 @@ using System.Runtime.Versioning;
 
 namespace PrettyLogging.Console;
 
-internal class LoggingFormatterConfigureOptions : IConfigureOptions<LoggingFormatterOptions>
+internal class LoggingFormatterConfigureOptions : IConfigureOptions<PrettyLoggingFormatterOptions>
 {
-            private readonly IConfiguration _configuration;
- 
-        [UnsupportedOSPlatform("browser")]
-        public LoggingFormatterConfigureOptions(ILoggerProviderConfiguration<ConsoleLoggerProvider> providerConfiguration)
-        {
-            _configuration = providerConfiguration.GetFormatterOptionsSection();
-        }
- 
-        public void Configure(LoggingFormatterOptions options) => options.Configure(_configuration);
+    private readonly IConfiguration _configuration;
+
+#if NET6_0_OR_GREATER
+    [UnsupportedOSPlatform("browser")]
+#endif
+    public LoggingFormatterConfigureOptions(ILoggerProviderConfiguration<ConsoleLoggerProvider> providerConfiguration)
+    {
+        _configuration = providerConfiguration.GetFormatterOptionsSection();
+    }
+
+    public void Configure(PrettyLoggingFormatterOptions options) => options.Configure(_configuration);
 
 }

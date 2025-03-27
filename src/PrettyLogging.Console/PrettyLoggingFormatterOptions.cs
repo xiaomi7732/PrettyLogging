@@ -1,18 +1,12 @@
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Configuration;
 using Microsoft.Extensions.Logging.Console;
 
 namespace PrettyLogging.Console;
 
-public class LoggingFormatterOptions : ConsoleFormatterOptions
+public class PrettyLoggingFormatterOptions : ConsoleFormatterOptions
 {
-    private readonly IConfiguration _configuration;
-
-
-    public LoggingFormatterOptions(ILoggerProviderConfiguration<ConsoleLoggerProvider> providerConfiguration)
+    public PrettyLoggingFormatterOptions()
     {
-        _configuration = providerConfiguration.GetFormatterOptionsSection();
     }
 
     /// <summary>
@@ -62,7 +56,6 @@ public class LoggingFormatterOptions : ConsoleFormatterOptions
     /// Gets or sets the color behavior for the logger.
     /// </summary>
     public LoggerColorBehavior ColorBehavior { get; set; } = LoggerColorBehavior.Default;
- 
 
-    internal void Configure(IConfiguration configuration) => configuration.Bind(_configuration);
+    internal void Configure(IConfiguration configuration) => configuration.Bind(this);
 }

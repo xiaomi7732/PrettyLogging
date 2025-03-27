@@ -13,37 +13,16 @@ namespace Microsoft.Extensions.Logging;
 
 public static class ServiceCollectionExtensions
 {
-    public static ILoggingBuilder AddTestConsole(this ILoggingBuilder builder) =>
-            builder.AddFormatterWithName(LoggingFormatter.InternalName);
-
     /// <summary>
     /// Adds a pretty console logger.
     /// </summary>
-    public static ILoggingBuilder AddPrettyConsole(this ILoggingBuilder loggingBuilder, Action<LoggingFormatterOptions>? options = null)
+    public static ILoggingBuilder AddPrettyConsole(this ILoggingBuilder loggingBuilder, Action<PrettyLoggingFormatterOptions>? configure = null)
     {
         loggingBuilder.Services.AddSingleton(_ => LogLevelReverseParser.Instance);
+        configure ??= (opt) => { };
 
-        //         loggingBuilder.AddConsole(consoleOptions =>
-        //         {
-        // #if DEBUG
-        //             System.Console.WriteLine("Formatter name: {0}", consoleOptions.FormatterName);
-        // #endif
-        //             if (string.IsNullOrEmpty(consoleOptions.FormatterName) ||
-        //                 string.Equals(consoleOptions.FormatterName, ConsoleFormatterNames.Simple, StringComparison.Ordinal))
-        //             {
-        // #if DEBUG
-        //                 System.Console.WriteLine("Overwriting formatter {0} => {1}.", consoleOptions.FormatterName ?? "(Null)", LoggingFormatter.InternalName);
-        // #endif
-        //                 consoleOptions.FormatterName = LoggingFormatter.InternalName;
-        //                 // Default options to an empty action.
-
-        //             }
-        //         });
-
-        options ??= (opt) => { };
-        loggingBuilder.AddConsoleFormatter<LoggingFormatter, LoggingFormatterOptions, LoggingFormatterConfigureOptions>();
-        loggingBuilder.AddConsoleWithFormatter(LoggingFormatter.InternalName, options);
-        // loggingBuilder.AddConsoleFormatter<LoggingFormatter, LoggingFormatterOptions>(options);
+        loggingBuilder.AddConsoleFormatter<LoggingFormatter, PrettyLoggingFormatterOptions, LoggingFormatterConfigureOptions>();
+        loggingBuilder.AddConsoleWithFormatter(LoggingFormatter.InternalName, configure);
         return loggingBuilder;
     }
 
@@ -53,7 +32,7 @@ public static class ServiceCollectionExtensions
     /// is specified. This won't have an effect on SystemD console formatter or Json console
     /// formatter.
     /// </summary>
-    public static ILoggingBuilder PrettyIt(this ILoggingBuilder loggingBuilder, Action<LoggingFormatterOptions>? options = null)
+    public static ILoggingBuilder PrettyIt(this ILoggingBuilder loggingBuilder, Action<PrettyLoggingFormatterOptions>? options = null)
         => AddPrettyConsole(loggingBuilder, options);
 
     internal static ILoggingBuilder AddConsoleWithFormatter<TOptions>(this ILoggingBuilder builder, string name, Action<TOptions> configure)
@@ -74,9 +53,15 @@ public static class ServiceCollectionExtensions
             builder.AddConsole((ConsoleLoggerOptions options) => options.FormatterName = name);
 
     private static ILoggingBuilder AddConsoleFormatter<
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TFormatter,
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+        TFormatter,
         TOptions,
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] TConfigureOptions>(this ILoggingBuilder builder)
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] 
+#endif
+        TConfigureOptions>(this ILoggingBuilder builder)
     where TOptions : ConsoleFormatterOptions
     where TFormatter : ConsoleFormatter
     where TConfigureOptions : class, IConfigureOptions<TOptions>
@@ -96,7 +81,9 @@ public static class ServiceCollectionExtensions
     }
 }
 
+#if NET6_0_OR_GREATER
 [UnsupportedOSPlatform("browser")]
+#endif
 internal sealed class ConsoleLoggerFormatterOptionsChangeTokenSource<TFormatter, TOptions> : ConfigurationChangeTokenSource<TOptions>
         where TOptions : ConsoleFormatterOptions
         where TFormatter : ConsoleFormatter
